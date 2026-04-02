@@ -1,0 +1,122 @@
+{
+  "components": [
+    {
+      "id": "webhook_1",
+      "provider": "webhook",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "webhook"
+      },
+      "ui": {
+        "position": {
+          "x": 20,
+          "y": 200
+        },
+        "measured": {
+          "width": 150,
+          "height": 164
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "prompt_1",
+      "provider": "prompt",
+      "config": {
+        "instructions": [
+          "You are a graph-grounded reading copilot.  Your job is to explain why a recommended paper is a good next read for a learner.  Rules: - Use only the supplied prompt and evidence. - Keep the response short and specific. - Explain the recommendation in terms of prerequisite coverage, follow-up value, or cross-field relevance. - Do not invent facts about the paper beyond the provided metadata and abstract. - Return only the explanation text."
+        ],
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 210,
+          "y": 200
+        },
+        "measured": {
+          "width": 150,
+          "height": 140
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "text",
+          "from": "webhook_1"
+        }
+      ]
+    },
+    {
+      "id": "llm_openai_1",
+      "provider": "llm_openai",
+      "config": {
+        "profile": "openai-5-mini",
+        "openai-5-2": {},
+        "parameters": {
+          "google": {}
+        },
+        "openai-5-mini": {
+          "apikey": "${ROCKETRIDE_AIKEY}"
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 400,
+          "y": 200
+        },
+        "measured": {
+          "width": 150,
+          "height": 88
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "questions",
+          "from": "prompt_1"
+        }
+      ]
+    },
+    {
+      "id": "response_answers_1",
+      "provider": "response_answers",
+      "config": {
+        "laneName": "answers"
+      },
+      "ui": {
+        "position": {
+          "x": 590,
+          "y": 200
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "answers",
+          "from": "llm_openai_1"
+        }
+      ]
+    }
+  ],
+  "project_id": "28b95893-0773-4ba0-8eee-6976d5227510",
+  "viewport": {
+    "x": 23.515151515151615,
+    "y": 21.62121212121218,
+    "zoom": 1.4696969696969695
+  },
+  "version": 1,
+  "source": "webhook_1",
+  "docRevision": 15
+}

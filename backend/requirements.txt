@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+neo4j
+semanticscholar
+python-dotenv
+pydantic
+httpx
+anyio
+anthropic
+openai
+sqlalchemy
+psycopg[binary]
+rocketride

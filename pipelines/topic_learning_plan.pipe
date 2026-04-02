@@ -1,0 +1,122 @@
+{
+  "components": [
+    {
+      "id": "webhook_1",
+      "provider": "webhook",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "webhook"
+      },
+      "ui": {
+        "position": {
+          "x": -75,
+          "y": 199
+        },
+        "measured": {
+          "width": 150,
+          "height": 160
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "prompt_1",
+      "provider": "prompt",
+      "config": {
+        "instructions": [
+          "You are an expert academic learning assistant.  Your job is to create clear, grounded study plans from the supplied research-paper evidence only.  Rules: - Use only the information in the provided prompt. - Do not invent claims, experiments, equations, benchmarks, or historical facts not present in the supplied evidence. - Write clearly for a student who is trying to learn efficiently. - Prefer concise structure over long exposition. - If the evidence is sparse, say so explicitly. - When asked for labeled sections, follow the requested format exactly."
+        ],
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 115,
+          "y": 199
+        },
+        "measured": {
+          "width": 150,
+          "height": 119
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "text",
+          "from": "webhook_1"
+        }
+      ]
+    },
+    {
+      "id": "llm_openai_1",
+      "provider": "llm_openai",
+      "config": {
+        "profile": "openai-5-mini",
+        "openai-5-2": {},
+        "parameters": {
+          "google": {}
+        },
+        "openai-5-mini": {
+          "apikey": "${ROCKETRIDE_AIKEY}"
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 305,
+          "y": 199
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "questions",
+          "from": "prompt_1"
+        }
+      ]
+    },
+    {
+      "id": "response_answers_1",
+      "provider": "response_answers",
+      "config": {
+        "laneName": "answers"
+      },
+      "ui": {
+        "position": {
+          "x": 495,
+          "y": 199
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "answers",
+          "from": "llm_openai_1"
+        }
+      ]
+    }
+  ],
+  "project_id": "908db928-24f5-442b-a454-2a997b71a1e1",
+  "viewport": {
+    "x": 163.13636363636368,
+    "y": 23.090909090909122,
+    "zoom": 1.4696969696969695
+  },
+  "version": 1,
+  "source": "webhook_1",
+  "docRevision": 18
+}

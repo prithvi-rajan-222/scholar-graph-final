@@ -1,0 +1,167 @@
+{
+  "pipeline": {
+    "name": "Future Research Directions",
+    "description": "Generate grounded future research directions from professor and graph context.",
+    "version": 1,
+    "project_id": "633d4219-9420-472e-b87c-9f9c75a3da98",
+    "source": "webhook_input",
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    },
+    "components": [
+      {
+        "id": "webhook_input",
+        "provider": "webhook",
+        "name": "Prompt Input",
+        "config": {}
+      },
+      {
+        "id": "future_ai_chat",
+        "provider": "ai_chat",
+        "name": "Future Directions Generator",
+        "config": {
+          "model": "${ROCKETRIDE_MODEL}"
+        },
+        "input": [
+          {
+            "from": "webhook_input",
+            "lane": "output"
+          }
+        ]
+      },
+      {
+        "id": "future_response",
+        "provider": "response",
+        "name": "Pipeline Response",
+        "config": {},
+        "input": [
+          {
+            "from": "future_ai_chat",
+            "lane": "answer"
+          }
+        ]
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "webhook_1",
+      "provider": "webhook",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "webhook"
+      },
+      "ui": {
+        "position": {
+          "x": 297.5,
+          "y": 65
+        },
+        "measured": {
+          "width": 150,
+          "height": 136
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "prompt_1",
+      "provider": "prompt",
+      "config": {
+        "instructions": [
+          "You are a grounded research ideation assistant. Your job is to propose plausible future research directions using only the supplied professor and paper evidence. Rules: - Use only the supplied prompt. - Do not invent unsupported trends or claims. - Keep ideas realistic, specific, and adjacent to the evidence. - Prefer ideas that build on the professor's existing themes or meaningful nearby intersections. - Return plain text only. - When asked for multiple directions, output one direction per line."
+        ],
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 487.5,
+          "y": 65
+        },
+        "measured": {
+          "width": 150,
+          "height": 119
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "text",
+          "from": "webhook_1"
+        }
+      ]
+    },
+    {
+      "id": "llm_openai_1",
+      "provider": "llm_openai",
+      "config": {
+        "profile": "openai-5-mini",
+        "openai-5-2": {},
+        "parameters": {
+          "google": {}
+        },
+        "openai-5-mini": {
+          "apikey": "${ROCKETRIDE_AIKEY}"
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 677.5,
+          "y": 65
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "questions",
+          "from": "prompt_1"
+        }
+      ]
+    },
+    {
+      "id": "response_answers_1",
+      "provider": "response_answers",
+      "config": {
+        "laneName": "answers"
+      },
+      "ui": {
+        "position": {
+          "x": 867.5,
+          "y": 65
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "answers",
+          "from": "llm_openai_1"
+        }
+      ]
+    }
+  ],
+  "viewport": {
+    "x": -195.13099142562885,
+    "y": 284.2204542230865,
+    "zoom": 1.2675205545316566
+  },
+  "version": 1,
+  "docRevision": 30,
+  "source": "webhook_1"
+}

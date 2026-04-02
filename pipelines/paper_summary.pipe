@@ -1,0 +1,125 @@
+{
+  "components": [
+    {
+      "id": "webhook_1",
+      "provider": "webhook",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "webhook"
+      },
+      "ui": {
+        "position": {
+          "x": 12,
+          "y": 12
+        },
+        "measured": {
+          "width": 150,
+          "height": 164
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "prompt_1",
+      "provider": "prompt",
+      "config": {
+        "instructions": [
+          "You are a careful research tutor.  Your job is to explain a research paper in plain English using only the supplied metadata and abstract.  Rules: - Stay grounded strictly in the provided prompt. - Do not rely on outside knowledge. - Do not fabricate missing details. - If the abstract or metadata is limited, say that clearly. - Prefer clarity, precision, and student-friendly language."
+        ],
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 242,
+          "y": 40
+        },
+        "measured": {
+          "width": 150,
+          "height": 140
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "text",
+          "from": "webhook_1"
+        }
+      ]
+    },
+    {
+      "id": "llm_openai_1",
+      "provider": "llm_openai",
+      "config": {
+        "profile": "openai-5-mini",
+        "parameters": {
+          "google": {}
+        },
+        "openai-5-mini": {
+          "apikey": "${ROCKETRIDE_AIKEY}"
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 472,
+          "y": 66
+        },
+        "measured": {
+          "width": 150,
+          "height": 88
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "questions",
+          "from": "prompt_1"
+        }
+      ]
+    },
+    {
+      "id": "response_answers_1",
+      "provider": "response_answers",
+      "name": "Answer",
+      "config": {
+        "laneName": "answers",
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 702,
+          "y": 77
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "answers",
+          "from": "llm_openai_1"
+        }
+      ]
+    }
+  ],
+  "project_id": "28083f6a-fcf4-413f-99ab-6f4e58b2d0ab",
+  "viewport": {
+    "x": 37.79220779220782,
+    "y": 307.7922077922078,
+    "zoom": 1.2597402597402596
+  },
+  "version": 1,
+  "source": "webhook_1",
+  "docRevision": 42
+}
